@@ -1,0 +1,22 @@
+groups:
+  - name: disk_alerts
+    rules:
+      - alert: HighDiskUsage
+        expr: disk_usage_percent > 80
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Disk usage above 80%"
+          description: "Disk usage is {{ $value }}%"
+
+  - name: http_errors
+    rules:
+      - alert: High500ErrorRate
+        expr: sum(rate(http_requests_total{status="500"}[1m])) > 0.05
+        for: 1m
+        labels:
+          severity: critical
+        annotations:
+          summary: "High rate of HTTP 500 errors"
+          description: "HTTP 500 error rate is {{ $value }} per second"
